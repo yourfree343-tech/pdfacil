@@ -1,6 +1,7 @@
-"""Editor PDF: visor y editor de PDF para Windows."""
-__version__ = "1.3.2"
+"""PDFácil: visor y editor de PDF para Windows."""
+__version__ = "1.4.0"
 __author__ = "Agencia Daga"
 __publisher__ = "Agencia Daga"
-APP_NAME = "Editor PDF"
-GITHUB_REPO = "yourfree343-tech/editor-pdf"
+APP_NAME = "PDFácil"
+EXE_NAME = "PDFacil"          # nombre del .exe y del instalador (sin tilde)
+GITHUB_REPO = "yourfree343-tech/pdfacil"

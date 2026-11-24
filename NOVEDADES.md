@@ -1,5 +1,9 @@
 # Novedades
 
+## 1.4.0
+- Nuevo nombre: **PDFácil**, con icono nuevo.
+- Instalador con imágenes propias. Al actualizar se sustituyen los accesos directos de «Editor PDF».
+
 ## 1.3.2
 - Arreglado: «Buscar actualizaciones» dejaba el programa colgado.
 

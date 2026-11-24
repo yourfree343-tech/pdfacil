@@ -57,13 +57,13 @@ def make_list():
 
     def about():
         b = QMessageBox(win)
-        b.setWindowTitle("Acerca de Editor PDF")
-        b.setText("<h3>Editor PDF</h3><p>Versión 1.3.0<br>© 2026 Agencia Daga</p><p>Visor y editor de PDF.</p>")
+        b.setWindowTitle("Acerca de PDFácil")
+        b.setText("<h3>PDFácil</h3><p>Versión 1.4.0<br>© 2026 Agencia Daga</p><p>Visor y editor de PDF.</p>")
         b.setIconPixmap(win.windowIcon().pixmap(64, 64))
         return b
 
     def question():
-        b = QMessageBox(QMessageBox.Question, "Editor PDF", "¿Guardar los cambios de «documento.pdf»?",
+        b = QMessageBox(QMessageBox.Question, "PDFácil", "¿Guardar los cambios de «documento.pdf»?",
                         QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel, win)
         return b
 

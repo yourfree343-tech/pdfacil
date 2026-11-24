@@ -1,4 +1,4 @@
-"""Registro de Editor PDF para los archivos .pdf (solo en el usuario actual, sin permisos de administrador).
+"""Registro de PDFácil para los archivos .pdf (solo en el usuario actual, sin permisos de administrador).
 
 Windows 10/11 no deja que un programa se ponga como predeterminado él solo: se registra para que
 aparezca en «Abrir con» y en Configuración > Aplicaciones predeterminadas, y el usuario lo elige allí.
@@ -9,7 +9,8 @@ import sys
 import winreg
 
 PROGID = "EditorPDF.Document"
-APP_REG_NAME = "Editor PDF"
+APP_REG_NAME = "PDFácil"
+OLD_REG_NAMES = ("Editor PDF",)  # nombres anteriores del programa
 CAPS = r"Software\EditorPDF\Capabilities"
 
 
@@ -47,7 +48,18 @@ def register():
     _set(CAPS, "ApplicationDescription", "Ver, editar, firmar y organizar documentos PDF")
     _set(CAPS + r"\FileAssociations", ".pdf", PROGID)
     _set(r"Software\RegisteredApplications", APP_REG_NAME, CAPS)
+    _remove_old_names()
     _notify()
+
+
+def _remove_old_names():
+    for name in OLD_REG_NAMES:
+        try:
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\RegisteredApplications", 0,
+                                winreg.KEY_SET_VALUE) as k:
+                winreg.DeleteValue(k, name)
+        except OSError:
+            pass
 
 
 def _delete_tree(root, path):
@@ -89,7 +101,7 @@ def status():
 
 
 def is_default():
-    """True si Windows tiene Editor PDF como predeterminado para .pdf."""
+    """True si Windows tiene PDFácil como predeterminado para .pdf."""
     try:
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER,
                             r"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.pdf\UserChoice") as k:
@@ -99,4 +111,5 @@ def is_default():
 
 
 def open_default_apps_settings():
-    os.startfile("ms-settings:defaultapps?registeredAppUser=" + APP_REG_NAME.replace(" ", "%20"))
+    from urllib.parse import quote
+    os.startfile("ms-settings:defaultapps?registeredAppUser=" + quote(APP_REG_NAME))

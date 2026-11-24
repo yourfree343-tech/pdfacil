@@ -1,6 +1,6 @@
 """Actualizaciones desde las versiones (releases) públicas de GitHub.
 
-Cada versión publicada lleva el instalador «EditorPDF-<versión>-instalador.exe» como archivo adjunto.
+Cada versión publicada lleva el instalador «PDFacil-<versión>-instalador.exe» como archivo adjunto.
 El programa compara su versión con la última publicada y, si hay una nueva, descarga el instalador
 y lo ejecuta; el instalador cierra el programa, lo actualiza y lo vuelve a abrir.
 """
@@ -37,7 +37,7 @@ def _open(req, timeout):
     return urllib.request.urlopen(req, timeout=timeout, context=_ssl_context())
 
 
-UA ={"User-Agent": "EditorPDF-updater", "Accept": "application/vnd.github+json"}
+UA ={"User-Agent": "PDFacil-updater", "Accept": "application/vnd.github+json"}
 
 
 def parse_version(v):
@@ -66,9 +66,9 @@ def is_newer(remote, local=__version__):
 
 
 def download(url, name, progress=None, cancelled=lambda: False):
-    folder = os.path.join(tempfile.gettempdir(), "EditorPDF-actualizacion")
+    folder = os.path.join(tempfile.gettempdir(), "PDFacil-actualizacion")
     os.makedirs(folder, exist_ok=True)
-    path = os.path.join(folder, os.path.basename(name) or "EditorPDF-instalador.exe")
+    path = os.path.join(folder, os.path.basename(name) or "PDFacil-instalador.exe")
     req = urllib.request.Request(url, headers={"User-Agent": UA["User-Agent"]})
     with _open(req, 30) as r, open(path + ".part", "wb") as f:
         total = int(r.headers.get("Content-Length") or 0)

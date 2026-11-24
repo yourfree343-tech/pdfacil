@@ -236,8 +236,8 @@ class SettingsDialog(QDialog):
         row.addStretch()
         lay.addLayout(row)
         self._note(lay, "Windows no deja que un programa se ponga como predeterminado por su cuenta. "
-                        "«Elegir como predeterminado» registra Editor PDF y abre la pantalla de Windows: "
-                        "allí, en «.pdf», elige Editor PDF.\n\nSolo afecta a tu usuario y no necesita permisos "
+                        "«Elegir como predeterminado» registra PDFácil y abre la pantalla de Windows: "
+                        "allí, en «.pdf», elige PDFácil.\n\nSolo afecta a tu usuario y no necesita permisos "
                         "de administrador.")
         self._refresh_assoc()
 
@@ -245,13 +245,13 @@ class SettingsDialog(QDialog):
     def _refresh_assoc(self):
         st = fileassoc.status()
         if fileassoc.is_default():
-            txt, col = "✔  Editor PDF es el programa predeterminado para los PDF.", self.pal["ok"]
+            txt, col = "✔  PDFácil es el programa predeterminado para los PDF.", self.pal["ok"]
         elif st == "ok":
-            txt, col = "Editor PDF aparece en «Abrir con», pero no es el predeterminado.", self.pal["muted"]
+            txt, col = "PDFácil aparece en «Abrir con», pero no es el predeterminado.", self.pal["muted"]
         elif st == "old":
             txt, col = "Está registrado con otra ubicación del programa. Pulsa «Añadir a «Abrir con»» para actualizarlo.", self.pal["danger"]
         else:
-            txt, col = "Editor PDF todavía no está registrado para abrir los PDF.", self.pal["muted"]
+            txt, col = "PDFácil todavía no está registrado para abrir los PDF.", self.pal["muted"]
         self.assoc_state.setText(txt)
         self.assoc_state.setStyleSheet(f"color:{col}; font-weight:600;")
         self.b_unreg.setEnabled(st != "none")
@@ -269,7 +269,7 @@ class SettingsDialog(QDialog):
             fileassoc.open_default_apps_settings()
         except OSError:
             QMessageBox.information(self, "Ajustes", "Abre Configuración > Aplicaciones > Aplicaciones predeterminadas "
-                                                     "y elige Editor PDF para «.pdf».")
+                                                     "y elige PDFácil para «.pdf».")
 
     def _unregister(self):
         fileassoc.unregister()

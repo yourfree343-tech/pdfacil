@@ -1,4 +1,4 @@
-"""Ventana principal del Editor PDF."""
+"""Ventana principal de PDFácil."""
 import os
 
 import pymupdf as fitz
@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
     QSpinBox, QStackedWidget, QToolBar, QToolButton, QVBoxLayout, QWidget,
 )
 
-from . import __publisher__, __version__
+from . import APP_NAME, __publisher__, __version__
 from . import settings_dialog as cfg
 from . import icons, ocr, theme
 from .dialogs import (
@@ -23,7 +23,7 @@ from .icon import make_icon, make_pixmap
 from .thumbs import ThumbPanel
 from .view import PageView, T, pixmap_to_qimage
 
-APP = "Editor PDF"
+APP = APP_NAME
 DATA_DIR = os.path.join(os.environ.get("APPDATA", os.path.expanduser("~")), "EditorPDF")
 SIGNATURE = os.path.join(DATA_DIR, "firma.png")
 MAX_RECENT = 8

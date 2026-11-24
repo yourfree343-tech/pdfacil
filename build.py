@@ -1,17 +1,15 @@
-"""Genera el icono y la ficha de versión, y empaqueta el programa en dist/EditorPDF/EditorPDF.exe"""
+"""Compila PDFácil: imágenes, ficha de versión, programa (dist/PDFacil/PDFacil.exe) e instalador."""
 import os
+import shutil
 import subprocess
 import sys
 
-os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-from PySide6.QtWidgets import QApplication  # noqa: E402
+from editor_pdf import APP_NAME, EXE_NAME, __publisher__, __version__
 
-app = QApplication([])
-from editor_pdf import APP_NAME, __publisher__, __version__  # noqa: E402
-from editor_pdf.icon import make_pixmap  # noqa: E402
+# 1) icono e imágenes (con fuentes reales: en otro proceso sin el modo offscreen)
+subprocess.check_call([sys.executable, os.path.join("tools", "generar_imagenes.py")])
 
-make_pixmap(256).save("icono.ico", "ICO")
-
+# 2) ficha de versión del .exe
 nums = tuple(int(x) for x in (__version__.split(".") + ["0", "0", "0"])[:4])
 with open("version_info.txt", "w", encoding="utf-8") as f:
     f.write(f"""VSVersionInfo(
@@ -22,9 +20,9 @@ with open("version_info.txt", "w", encoding="utf-8") as f:
       StringStruct('CompanyName', '{__publisher__}'),
       StringStruct('FileDescription', '{APP_NAME}'),
       StringStruct('FileVersion', '{__version__}'),
-      StringStruct('InternalName', 'EditorPDF'),
+      StringStruct('InternalName', '{EXE_NAME}'),
       StringStruct('LegalCopyright', '© 2026 {__publisher__}'),
-      StringStruct('OriginalFilename', 'EditorPDF.exe'),
+      StringStruct('OriginalFilename', '{EXE_NAME}.exe'),
       StringStruct('ProductName', '{APP_NAME}'),
       StringStruct('ProductVersion', '{__version__}')])]),
     VarFileInfo([VarStruct('Translation', [0x0C0A, 1200])])
@@ -32,9 +30,13 @@ with open("version_info.txt", "w", encoding="utf-8") as f:
 )
 """)
 
+# 3) programa
+old = os.path.join("dist", "EditorPDF")  # carpeta del nombre anterior
+if os.path.isdir(old):
+    shutil.rmtree(old, ignore_errors=True)
 subprocess.check_call([
     sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--windowed",
-    "--name", "EditorPDF", "--icon", "icono.ico", "--version-file", "version_info.txt",
+    "--name", EXE_NAME, "--icon", "icono.ico", "--version-file", "version_info.txt",
     "--collect-submodules", "winrt",
     "--collect-submodules", "pyhanko", "--collect-data", "pyhanko",
     "--collect-submodules", "pyhanko_certvalidator", "--collect-data", "pyhanko_certvalidator",
@@ -47,11 +49,15 @@ subprocess.check_call([
 ])
 
 # Qt no necesita el OpenGL por software (el visor pinta sin OpenGL): 20 MB menos
-gl = os.path.join("dist", "EditorPDF", "_internal", "PySide6", "opengl32sw.dll")
+gl = os.path.join("dist", EXE_NAME, "_internal", "PySide6", "opengl32sw.dll")
 if os.path.exists(gl):
     os.remove(gl)
 
-# ---- instalador (Inno Setup)
+# 4) instalador (Inno Setup). El .iss tiene que estar en UTF-8 con BOM para que salgan bien las tildes.
+iss = os.path.join("installer", "PDFacil.iss")
+raw = open(iss, "rb").read()
+if not raw.startswith(b"\xef\xbb\xbf"):
+    open(iss, "wb").write(b"\xef\xbb\xbf" + raw)
 ISCC_CANDIDATES = [
     os.path.expandvars(r"%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe"),
     r"C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
@@ -59,7 +65,7 @@ ISCC_CANDIDATES = [
 ]
 iscc = next((p for p in ISCC_CANDIDATES if os.path.exists(p)), None)
 if iscc:
-    subprocess.check_call([iscc, "/Q", f"/DMyAppVersion={__version__}", r"installer\EditorPDF.iss"])
-    print(f"Instalador: dist\EditorPDF-{__version__}-instalador.exe")
+    subprocess.check_call([iscc, "/Q", f"/DMyAppVersion={__version__}", iss])
+    print(f"Instalador: dist/{EXE_NAME}-{__version__}-instalador.exe")
 else:
     print("Inno Setup no está instalado: no se genera el instalador (winget install JRSoftware.InnoSetup).")

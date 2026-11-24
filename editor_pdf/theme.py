@@ -43,7 +43,7 @@ def _assets(p):
     """Dibujos para la hoja de estilos (marca de verificación y flechas) con los colores del tema."""
     import os
     import tempfile
-    folder = os.path.join(tempfile.gettempdir(), "EditorPDF-tema")
+    folder = os.path.join(tempfile.gettempdir(), "PDFacil-tema")
     os.makedirs(folder, exist_ok=True)
     svgs = {
         "check": ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" fill="none" '

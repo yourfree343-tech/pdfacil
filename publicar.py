@@ -9,9 +9,9 @@ import subprocess
 import sys
 import tempfile
 
-from editor_pdf import APP_NAME, GITHUB_REPO, __version__
+from editor_pdf import APP_NAME, EXE_NAME, GITHUB_REPO, __version__
 
-inst = os.path.join("dist", f"EditorPDF-{__version__}-instalador.exe")
+inst = os.path.join("dist", f"{EXE_NAME}-{__version__}-instalador.exe")
 if not os.path.exists(inst):
     sys.exit(f"No existe {inst}: ejecuta antes build.py")
 text = open("NOVEDADES.md", encoding="utf-8").read()

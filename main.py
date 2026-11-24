@@ -57,8 +57,8 @@ def main():
     except Exception:
         pass
     app = QApplication(sys.argv)
-    from editor_pdf import __publisher__, __version__
-    app.setApplicationName("Editor PDF")
+    from editor_pdf import APP_NAME, __publisher__, __version__
+    app.setApplicationName(APP_NAME)
     app.setApplicationVersion(__version__)
     app.setOrganizationName(__publisher__)
     from editor_pdf import theme

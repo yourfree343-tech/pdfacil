@@ -1,4 +1,4 @@
-# Editor PDF
+# PDFácil (antes «Editor PDF»)
 
 Programa de escritorio para Windows para ver y editar PDF, al estilo de Acrobat. Editor: Agencia Daga (no poner nombres de personas en la app).
 Python 3.11 + PySide6 (Qt) + PyMuPDF; firma digital con pyHanko; OCR y corrector con los motores de Windows.
@@ -6,10 +6,10 @@ Toda la interfaz y los mensajes van en español.
 
 ## Comandos
 - Ejecutar: `.venv\Scripts\python main.py [archivo.pdf]`
-- Compilar el .exe: `.venv\Scripts\python build.py`. Genera `dist\EditorPDF\EditorPDF.exe`, al que apunta
-  el acceso directo «Editor PDF» del escritorio. Antes de compilar, cierra el programa si está abierto.
+- Compilar el .exe: `.venv\Scripts\python build.py`. Genera las imágenes (`tools/generar_imagenes.py`),
+  `dist\PDFacil\PDFacil.exe` y `dist\PDFacil-<versión>-instalador.exe`.
 - Diagnóstico del .exe (OCR, firma con el certificado real, ortografía):
-  `dist\EditorPDF\EditorPDF.exe --diagnostico salida.txt`. Es una app sin consola: escribe en el archivo.
+  `dist\PDFacil\PDFacil.exe --diagnostico salida.txt`. Es una app sin consola: escribe en el archivo.
 - Pruebas (sin pantalla, `QT_QPA_PLATFORM=offscreen`; usa `PYTHONIOENCODING=utf-8` para ver la salida):
   - `tests\prueba_auto.py <carpeta>`: anotaciones, editar texto, formularios, páginas, deshacer, OCR,
     guardar, comprimir y contraseña. Debe terminar con `TODO OK`.
@@ -63,8 +63,11 @@ Historial en `NOVEDADES.md`.
   archivo y ejecútalo.
 
 ## Publicación y actualizaciones
-- Repositorio público: https://github.com/yourfree343-tech/editor-pdf (cuenta de GitHub `yourfree343-tech`).
-- Instalador: Inno Setup (`installer/EditorPDF.iss`), por usuario y sin administrador; lo genera `build.py`.
+- Repositorio público: https://github.com/yourfree343-tech/pdfacil (cuenta `yourfree343-tech`; antes se llamaba
+  `editor-pdf` y GitHub redirige esa dirección, que es la que consultan las versiones 1.3.x).
+- Nombres internos que NO hay que cambiar (para no romper actualizaciones ni ajustes): el AppId del instalador,
+  `QSettings("EditorPDF", "EditorPDF")`, el ProgId `EditorPDF.Document` y `Software\EditorPDF\Capabilities`.
+- Instalador: Inno Setup (`installer/PDFacil.iss`, en UTF-8 con BOM), por usuario y sin administrador; lo genera `build.py`.
   En modo silencioso vuelve a abrir el programa (lo usan las actualizaciones).
 - Actualización automática (`updater.py`): consulta `releases/latest` de GitHub, descarga el adjunto
   `*instalador.exe` y lo ejecuta con `/SILENT`. Solo funciona en el .exe instalado; desde el código abre la página.
