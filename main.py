@@ -40,6 +40,12 @@ def main():
                          + (f", sugerencia para 'prueva': {sp.suggest('prueva', 1)}" if sp else ""))
         except Exception as e:
             lines.append(f"Ortografía: ERROR {e!r}")
+        try:
+            from editor_pdf import updater
+            info = updater.latest_release()
+            lines.append(f"Actualizaciones: última publicada {info['version'] if info else 'ninguna'}")
+        except Exception as e:
+            lines.append(f"Actualizaciones: ERROR {e!r}")
         from editor_pdf import __version__
         lines.insert(0, f"Versión {__version__}")
         with open(sys.argv[2], "w", encoding="utf-8") as f:

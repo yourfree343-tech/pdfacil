@@ -1,5 +1,8 @@
 # Novedades
 
+## 1.3.1
+- Arreglada la comprobación de actualizaciones en algunos equipos (verificación HTTPS con los certificados de Windows).
+
 ## 1.3.0
 - Diseño nuevo: tema claro y oscuro (o el de Windows), iconos nuevos, barra lateral de herramientas y barra de opciones de cada herramienta.
 - Pantalla de bienvenida con archivos recientes.

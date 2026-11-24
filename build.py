@@ -39,7 +39,7 @@ subprocess.check_call([
     "--collect-submodules", "pyhanko", "--collect-data", "pyhanko",
     "--collect-submodules", "pyhanko_certvalidator", "--collect-data", "pyhanko_certvalidator",
     "--collect-submodules", "comtypes",
-    "--hidden-import", "aiohttp",
+    "--hidden-import", "aiohttp", "--hidden-import", "truststore", "--collect-data", "certifi",
     "--exclude-module", "PySide6.QtWebEngineCore", "--exclude-module", "PySide6.QtPdf",
     "--exclude-module", "PySide6.Qt3DCore", "--exclude-module", "PySide6.QtQuick",
     "--exclude-module", "pymupdf4llm", "--exclude-module", "pymupdf_layout", "--exclude-module", "tkinter",

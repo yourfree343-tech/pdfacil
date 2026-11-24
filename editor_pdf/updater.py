@@ -17,7 +17,27 @@ from PySide6.QtCore import QObject, QThread, Signal
 from . import GITHUB_REPO, __version__
 
 API = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
-UA = {"User-Agent": "EditorPDF-updater", "Accept": "application/vnd.github+json"}
+
+
+def _ssl_context():
+    """Verifica HTTPS con Windows (completa la cadena de certificados como el navegador)."""
+    import ssl
+    try:
+        import truststore
+        return truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    except Exception:
+        try:
+            import certifi
+            return ssl.create_default_context(cafile=certifi.where())
+        except Exception:
+            return ssl.create_default_context()
+
+
+def _open(req, timeout):
+    return urllib.request.urlopen(req, timeout=timeout, context=_ssl_context())
+
+
+UA ={"User-Agent": "EditorPDF-updater", "Accept": "application/vnd.github+json"}
 
 
 def parse_version(v):
@@ -29,7 +49,7 @@ def latest_release(timeout=8):
     """Devuelve dict(version, notes, url, size, page) de la última versión, o None si no hay ninguna."""
     req = urllib.request.Request(API, headers=UA)
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as r:
+        with _open(req, timeout) as r:
             data = json.load(r)
     except urllib.error.HTTPError as e:
         if e.code == 404:  # todavía no hay versiones publicadas
@@ -50,7 +70,7 @@ def download(url, name, progress=None, cancelled=lambda: False):
     os.makedirs(folder, exist_ok=True)
     path = os.path.join(folder, os.path.basename(name) or "EditorPDF-instalador.exe")
     req = urllib.request.Request(url, headers={"User-Agent": UA["User-Agent"]})
-    with urllib.request.urlopen(req, timeout=30) as r, open(path + ".part", "wb") as f:
+    with _open(req, 30) as r, open(path + ".part", "wb") as f:
         total = int(r.headers.get("Content-Length") or 0)
         done = 0
         while True:
