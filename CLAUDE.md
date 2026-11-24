@@ -14,6 +14,7 @@ Toda la interfaz y los mensajes van en español.
   - `tests\prueba_auto.py <carpeta>`: anotaciones, editar texto, formularios, páginas, deshacer, OCR,
     guardar, comprimir y contraseña. Debe terminar con `TODO OK`.
   - `tests\prueba_ortografia.py <carpeta>`: revisión y corrección ortográfica.
+  - `tests\prueba_actualizacion.py`: botón «Buscar actualizaciones» contra GitHub; los avisos deben salir en el hilo principal.
   - `tests\prueba_firma.py <muestra.pdf> <carpeta>`: firma desde la interfaz con el certificado real de
     la FNMT; necesita internet. Los PDF firmados llevan el nombre y el DNI del usuario: escríbelos en el
     scratchpad, bórralos después y no muestres el DNI en la salida.
@@ -55,6 +56,9 @@ Historial en `NOVEDADES.md`.
   `pdf.source_bytes`, y con cambios se avisa antes. La firma se hace siempre sobre un archivo nuevo.
 - La fuente Helvetica básica pierde el «€»: para texto nuevo usa Arial (`pick_font`); `subset_fonts()` al guardar.
 - `fullcopy_page(i, i+1)` falla en la última página: usa `-1`.
+- **Hilos de Qt:** nunca crees ventanas o avisos fuera del hilo principal. Una señal de un QThread conectada a una
+  función suelta se ejecuta en ese hilo (así se colgaba la 1.3.1): recibe el resultado en un QObject del hilo principal.
+- Las conexiones HTTPS van con `truststore` (certificados de Windows); con el `ssl` de Python fallaba la cadena de GitHub.
 - En Git Bash, los heredocs largos con comillas fallan a veces («unexpected EOF»): escribe el script en un
   archivo y ejecútalo.
 

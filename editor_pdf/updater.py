@@ -12,7 +12,7 @@ import sys
 import tempfile
 import urllib.request
 
-from PySide6.QtCore import QObject, QThread, Signal
+from PySide6.QtCore import QObject, Qt, QThread, Signal, Slot
 
 from . import GITHUB_REPO, __version__
 
@@ -109,18 +109,34 @@ class CheckWorker(QObject):
             self.finished.emit(None, str(e))
 
 
+class _Receiver(QObject):
+    """Vive en el hilo de la ventana: así el resultado se procesa (y se muestran avisos) en el hilo principal.
+
+    Conectar la señal del hilo de trabajo a una función suelta la ejecutaría en ese hilo, y crear ventanas
+    fuera del hilo principal cuelga el programa.
+    """
+
+    def __init__(self, parent, callback, thread):
+        super().__init__(parent)
+        self.callback, self.thread = callback, thread
+
+    @Slot(object, str)
+    def on_done(self, info, err):
+        self.thread.quit()
+        self.callback(info, err)
+        self.deleteLater()
+
+
 def check_async(parent, callback):
     th = QThread(parent)
     w = CheckWorker()
     w.moveToThread(th)
+    rec = _Receiver(parent, callback, th)
     th.started.connect(w.run)
-
-    def done(info, err):
-        callback(info, err)
-        th.quit()
-    w.finished.connect(done)
+    w.finished.connect(rec.on_done, Qt.QueuedConnection)
     th.finished.connect(w.deleteLater)
     th.finished.connect(th.deleteLater)
-    th._worker = w  # mantener la referencia
+    th._worker = w  # mantener las referencias
+    th._receiver = rec
     th.start()
     return th

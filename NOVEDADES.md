@@ -1,5 +1,8 @@
 # Novedades
 
+## 1.3.2
+- Arreglado: «Buscar actualizaciones» dejaba el programa colgado.
+
 ## 1.3.1
 - Arreglada la comprobación de actualizaciones en algunos equipos (verificación HTTPS con los certificados de Windows).
 

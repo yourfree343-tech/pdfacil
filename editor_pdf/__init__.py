@@ -1,5 +1,5 @@
 """Editor PDF: visor y editor de PDF para Windows."""
-__version__ = "1.3.1"
+__version__ = "1.3.2"
 __author__ = "Agencia Daga"
 __publisher__ = "Agencia Daga"
 APP_NAME = "Editor PDF"
