@@ -981,6 +981,7 @@ class MainWindow(QMainWindow):
         b_here = box.addButton("Insertar tras esta página", QMessageBox.AcceptRole)
         b_open = box.addButton("Abrir", QMessageBox.AcceptRole)
         box.addButton("Cancelar", QMessageBox.RejectRole)
+        theme.fit_buttons(box)
         box.exec()
         c = box.clickedButton()
         if c == b_add:
@@ -1424,6 +1425,16 @@ class MainWindow(QMainWindow):
         b_skip = box.addButton("Saltar esta versión", QMessageBox.DestructiveRole)
         box.addButton("Más tarde", QMessageBox.RejectRole)
         box.setDefaultButton(b_now)
+        theme.fit_buttons(box)
+        # que no se quede detrás de otras ventanas: la principal queda bloqueada hasta que se responda
+        if self.isMinimized():
+            self.showNormal()
+        self.raise_()
+        self.activateWindow()
+        box.setWindowFlag(Qt.WindowStaysOnTopHint, True)
+        box.show()
+        box.raise_()
+        box.activateWindow()
         box.exec()
         if box.clickedButton() == b_skip:
             self.settings.setValue("update/skipped", info["version"])

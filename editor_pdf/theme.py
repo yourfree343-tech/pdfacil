@@ -217,6 +217,18 @@ def _qpalette(p):
     return pal
 
 
+def fit_buttons(box):
+    """Ensancha los botones de un QMessageBox para que quepa su texto.
+
+    El QMessageBox limita su ancho y encoge los botones, y con el relleno de la hoja de estilos
+    el texto se cortaba («tualizar aho»). El ancho va como estilo del botón porque la hoja global
+    (min-width) pisa setMinimumWidth al mostrarse; así el cuadro se hace más ancho.
+    """
+    for b in box.buttons():
+        w = max(64, b.fontMetrics().horizontalAdvance(b.text()) + 8)
+        b.setStyleSheet(f"min-width: {w}px;")
+
+
 def install_spanish(app):
     """Botones y diálogos estándar de Qt (Aceptar, Cancelar, Guardar, abrir archivo…) en español."""
     from PySide6.QtCore import QLibraryInfo, QLocale, QTranslator

@@ -1,5 +1,9 @@
 # Novedades
 
+## 1.4.2
+- El aviso de «Actualización disponible» sale siempre delante; antes podía quedar detrás y parecía que el programa se había bloqueado.
+- Arreglados los botones cortados en ese aviso y en el de añadir archivos.
+
 ## 1.4.1
 - Arreglado: al editar texto en un PDF ya guardado con PDFácil, las letras nuevas salían como cuadraditos.
 
