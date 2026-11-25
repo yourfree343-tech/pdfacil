@@ -32,6 +32,22 @@ def pick_font(family, bold, italic):
     return _BASE14[family][k], None
 
 
+def free_fontname(page, name):
+    """Nombre de fuente que la página aún no usa.
+
+    Al guardar se recortan las fuentes (subset_fonts) a las letras usadas. Si luego se inserta texto
+    con el mismo nombre, PyMuPDF reutiliza esa fuente recortada y las letras nuevas salen como
+    cuadraditos. Con un nombre nuevo se incrusta la fuente completa.
+    """
+    used = {f[4] for f in page.get_fonts()}
+    if name not in used:
+        return name
+    n = 1
+    while f"{name}{n}" in used:
+        n += 1
+    return f"{name}{n}"
+
+
 class PasswordNeeded(Exception):
     pass
 

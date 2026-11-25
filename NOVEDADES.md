@@ -1,5 +1,8 @@
 # Novedades
 
+## 1.4.1
+- Arreglado: al editar texto en un PDF ya guardado con PDFácil, las letras nuevas salían como cuadraditos.
+
 ## 1.4.0
 - Nuevo nombre: **PDFácil**, con icono nuevo.
 - Instalador con imágenes propias. Al actualizar se sustituyen los accesos directos de «Editor PDF».

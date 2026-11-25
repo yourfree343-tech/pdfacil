@@ -1,5 +1,5 @@
 """PDFácil: visor y editor de PDF para Windows."""
-__version__ = "1.4.0"
+__version__ = "1.4.1"
 __author__ = "Agencia Daga"
 __publisher__ = "Agencia Daga"
 APP_NAME = "PDFácil"

@@ -55,6 +55,9 @@ Historial en `NOVEDADES.md`.
 - Un PDF firmado no se puede reescribir con PyMuPDF sin romper la firma. Si se guarda sin cambios se copia
   `pdf.source_bytes`, y con cambios se avisa antes. La firma se hace siempre sobre un archivo nuevo.
 - La fuente Helvetica básica pierde el «€»: para texto nuevo usa Arial (`pick_font`); `subset_fonts()` al guardar.
+- **Cuadraditos al editar un PDF ya guardado:** `subset_fonts()` deja la fuente «Earial» solo con las letras usadas; si
+  se vuelve a insertar texto con ese mismo `fontname`, PyMuPDF reutiliza la fuente recortada. Usa siempre
+  `free_fontname(page, nombre)` al insertar texto con `fontfile`.
 - `fullcopy_page(i, i+1)` falla en la última página: usa `-1`.
 - **Hilos de Qt:** nunca crees ventanas o avisos fuera del hilo principal. Una señal de un QThread conectada a una
   función suelta se ejecuta en ese hilo (así se colgaba la 1.3.1): recibe el resultado en un QObject del hilo principal.

@@ -4,6 +4,8 @@ import os
 
 import pymupdf as fitz
 
+from .document import free_fontname
+
 try:
     from winrt.windows.globalization import Language
     from winrt.windows.graphics.imaging import BitmapPixelFormat, SoftwareBitmap
@@ -69,7 +71,7 @@ def ocr_page(page, engine):
     der = page.derotation_matrix
     lin = fitz.Matrix(der.a, der.b, der.c, der.d, 0, 0)
     use_arial = os.path.exists(ARIAL)
-    fkw = dict(fontname="Earial", fontfile=ARIAL) if use_arial else dict(fontname="helv")
+    fkw = dict(fontname=free_fontname(page, "Earial"), fontfile=ARIAL) if use_arial else dict(fontname="helv")
     shape = page.new_shape()
     for text, x, y, w, h in words:
         rr = fitz.Rect(x / z, y / z, (x + w) / z, (y + h) / z)

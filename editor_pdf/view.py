@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
 )
 
 from .dialogs import TextDialog
-from .document import IMAGE_FILTER, pick_font
+from .document import IMAGE_FILTER, free_fontname, pick_font
 
 GAP = 26
 
@@ -688,6 +688,7 @@ class PageView(QGraphicsView):
             fname, ffile = pick_font(res["family"], res["bold"], res["italic"])
             kw = dict(fontsize=res["size"], fontname=fname, color=res["color"])
             if ffile:
+                kw["fontname"] = free_fontname(pg, fname)
                 kw["fontfile"] = ffile
                 self.pdf.fonts_added = True
             if abs(angle) > 0.5:
@@ -740,6 +741,7 @@ class PageView(QGraphicsView):
             fn_, ff_ = pick_font(style["family"], style["bold"], style["italic"])
             kw = dict(fontsize=style["size"], fontname=fn_, color=style["color"])
             if ff_:
+                kw["fontname"] = free_fontname(pg, fn_)
                 kw["fontfile"] = ff_
                 self.pdf.fonts_added = True
                 width = fitz.Font(fontfile=ff_).text_length(text, fontsize=style["size"])
